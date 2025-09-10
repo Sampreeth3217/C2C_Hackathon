@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-background text-gray-800 font-inter antialiased;
+}
+
+.gradient-primary {
+  @apply bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-600;
+}
+
+.glass-card {
+  @apply rounded-2xl shadow-lg p-6 backdrop-blur-md border transition hover:shadow-xl;
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+}
+
+.label {
+  @apply uppercase tracking-wide text-xs text-gray-500;
+}
+
+.heading {
+  @apply font-inter font-bold text-2xl md:text-3xl;
+}
+
+.body-text {
+  @apply font-inter text-base md:text-lg;
+}
+
+.status-chip {
+  @apply px-2 py-0.5 text-xs rounded-full font-medium;
+}
+
+.status-success { @apply bg-green-100 text-green-700; }
+.status-pending { @apply bg-yellow-100 text-yellow-700; }
+.status-failed { @apply bg-red-100 text-red-700; }
+

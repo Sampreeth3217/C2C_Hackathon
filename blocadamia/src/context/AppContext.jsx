@@ -1,17 +1,18 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { AppContext } from './context';
 import { toast } from 'react-toastify';
-
-const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
   const [wallet, setWallet] = useState({ connected: false, address: '' });
   const [user, setUser] = useState({ name: 'Guest', avatar: '' });
+  const [isGuest, setIsGuest] = useState(true);
   const [networkOnline, setNetworkOnline] = useState(true);
 
   const connectWallet = async () => {
     // Mock connect
     const address = '0x1234...ABCD';
     setWallet({ connected: true, address });
+    setIsGuest(false);
     toast.success('Wallet connected');
   };
 
@@ -24,17 +25,15 @@ export function AppProvider({ children }) {
     wallet,
     user,
     networkOnline,
+    isGuest,
     connectWallet,
     disconnectWallet,
     setUser,
     setNetworkOnline,
-  }), [wallet, user, networkOnline]);
+    setIsGuest,
+  }), [wallet, user, networkOnline, isGuest]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 
-export function useApp() {
-  const ctx = useContext(AppContext);
-  if (!ctx) throw new Error('useApp must be used within AppProvider');
-  return ctx;
-}
+// Hook moved to hooks/useApp.jsx to keep this file exporting only components

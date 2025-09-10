@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Shell from './components/layout/Shell';
+import ProtectedRoute from './components/layout/ProtectedRoute';
+import Landing from './pages/Landing';
+import Dashboard from './pages/Dashboard';
+import Payments from './pages/Payments';
+import Budgets from './pages/Budgets';
+import Loans from './pages/Loans';
+import Reputation from './pages/Reputation';
+import Profile from './pages/Profile';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+  <Route path="/app" element={<ProtectedRoute><Shell><Dashboard /></Shell></ProtectedRoute>} />
+  <Route path="/app/payments" element={<ProtectedRoute><Shell><Payments /></Shell></ProtectedRoute>} />
+  <Route path="/app/budgets" element={<ProtectedRoute><Shell><Budgets /></Shell></ProtectedRoute>} />
+  <Route path="/app/loans" element={<ProtectedRoute><Shell><Loans /></Shell></ProtectedRoute>} />
+  <Route path="/app/reputation" element={<ProtectedRoute><Shell><Reputation /></Shell></ProtectedRoute>} />
+  <Route path="/app/profile" element={<ProtectedRoute><Shell><Profile /></Shell></ProtectedRoute>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <ToastContainer position="top-right" />
     </>
-  )
+  );
 }
-
-export default App

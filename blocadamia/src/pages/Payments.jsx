@@ -4,7 +4,6 @@ import InputField from '../components/ui/InputField';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import { transactions } from '../data/mocks';
 import { formatNexa } from '../utils/currency';
-import { toast } from 'react-toastify';
 import { useState } from 'react';
 
 export default function Payments() {
@@ -16,14 +15,14 @@ export default function Payments() {
         <GlassCard>
           <div className="heading mb-4">QR Scanner</div>
           <div className="h-56 bg-gray-100/60 rounded-xl flex items-center justify-center mb-3">Mock Camera</div>
-          <PrimaryButton onClick={() => toast.info('Scanning QR...')}>Scan QR</PrimaryButton>
+          <PrimaryButton>Scan QR</PrimaryButton>
         </GlassCard>
         <GlassCard>
           <div className="heading mb-4">Manual Entry</div>
           <div className="space-y-3">
             <InputField label="Wallet Address" value={addr} onChange={(e) => setAddr(e.target.value)} placeholder="0x..." />
             <InputField label="Amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" />
-            <PrimaryButton onClick={() => toast.success('Payment submitted')}>Submit Payment</PrimaryButton>
+            <PrimaryButton>Submit Payment</PrimaryButton>
           </div>
         </GlassCard>
       </div>

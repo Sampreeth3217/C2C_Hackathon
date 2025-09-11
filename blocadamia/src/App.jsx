@@ -9,8 +9,7 @@ import Budgets from './pages/Budgets';
 import Loans from './pages/Loans';
 import Reputation from './pages/Reputation';
 import Profile from './pages/Profile';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// Removed ToastContainer to avoid popups
 
 export default function App() {
   return (
@@ -25,7 +24,7 @@ export default function App() {
   <Route path="/app/profile" element={<ProtectedRoute><Shell><Profile /></Shell></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      <ToastContainer position="top-right" />
+  {/* Toasts removed */}
     </>
   );
 }

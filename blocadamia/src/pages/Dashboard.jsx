@@ -1,14 +1,15 @@
-import { motion } from 'framer-motion';
 import GlassCard from '../components/ui/GlassCard';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import PieChartCard from '../components/charts/PieChartCard';
-import GaugeCard from '../components/charts/GaugeCard';
+import Speedometer from '../components/charts/Speedometer';
 import { budgetAlloc, reputation, transactions as tx } from '../data/mocks';
 import { formatNexa } from '../utils/currency';
 
 export default function Dashboard() {
+  // Convert 0–100 reputation percentage to 300–900 credit-style scale
+  const repScore = Math.round(300 + (reputation.score * (900 - 300)) / 100);
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <GlassCard className="md:col-span-1">
           <div className="heading">Wallet Balance</div>
@@ -19,20 +20,23 @@ export default function Dashboard() {
           </div>
         </GlassCard>
         <PieChartCard title="Budget Allocation" data={budgetAlloc} />
-        <GaugeCard title="Reputation Score" value={reputation.score} />
+        <GlassCard>
+          <div className="heading mb-2">Reputation Score</div>
+          <Speedometer value={repScore} />
+        </GlassCard>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <GlassCard className="md:col-span-2">
           <div className="heading mb-4">Transactions</div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="text-left text-gray-500">
+            <table className="w-full text-sm text-center">
+              <thead className="text-gray-500">
                 <tr>
                   <th className="py-2">Date</th>
                   <th>Recipient</th>
                   <th>Category</th>
-                  <th className="text-right">Amount</th>
+                  <th>Amount</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -42,7 +46,7 @@ export default function Dashboard() {
                     <td className="py-2">{t.date}</td>
                     <td>{t.recipient}</td>
                     <td>{t.category}</td>
-                    <td className="text-right">{formatNexa(t.amount)}</td>
+                    <td>{formatNexa(t.amount)}</td>
                     <td>
                       <span className={`status-chip ${t.status === 'success' ? 'status-success' : t.status === 'pending' ? 'status-pending' : 'status-failed'}`}>{t.status}</span>
                     </td>
@@ -61,6 +65,6 @@ export default function Dashboard() {
           </div>
         </GlassCard>
       </div>
-  </motion.div>
+  </div>
   );
 }

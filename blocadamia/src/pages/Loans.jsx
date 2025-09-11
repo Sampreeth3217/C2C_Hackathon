@@ -5,7 +5,6 @@ import PrimaryButton from '../components/ui/PrimaryButton';
 import { loans as mockLoans } from '../data/mocks';
 import { formatNexa } from '../utils/currency';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 
 export default function Loans() {
   const [amount, setAmount] = useState('');
@@ -31,7 +30,7 @@ export default function Loans() {
                 <option>12 months</option>
               </select>
             </label>
-            <PrimaryButton onClick={() => toast.success('Loan request submitted')}>Submit</PrimaryButton>
+            <PrimaryButton>Submit</PrimaryButton>
           </div>
         </GlassCard>
         <GlassCard>

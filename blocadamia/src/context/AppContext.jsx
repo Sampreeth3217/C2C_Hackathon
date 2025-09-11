@@ -1,24 +1,63 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AppContext } from './context';
-import { toast } from 'react-toastify';
 
 export function AppProvider({ children }) {
   const [wallet, setWallet] = useState({ connected: false, address: '' });
-  const [user, setUser] = useState({ name: 'Guest', avatar: '' });
+  // Load user from localStorage if available, else default
+  const [user, setUser] = useState(() => {
+    try {
+      const raw = localStorage.getItem('user');
+      if (raw) return JSON.parse(raw);
+    } catch (e) {
+      void e; // ignore corrupted localStorage
+    }
+    return {
+      name: 'Guest',
+      email: '',
+      bio: '',
+      avatar: '',
+    };
+  });
   const [isGuest, setIsGuest] = useState(true);
   const [networkOnline, setNetworkOnline] = useState(true);
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'light' || stored === 'dark') {
+      setTheme(stored);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark' : 'light');
+    }
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+
+  // Persist user profile to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('user', JSON.stringify(user));
+    } catch (e) {
+      void e; // storage may be unavailable (private mode)
+    }
+  }, [user]);
 
   const connectWallet = async () => {
     // Mock connect
     const address = '0x1234...ABCD';
     setWallet({ connected: true, address });
     setIsGuest(false);
-    toast.success('Wallet connected');
   };
 
   const disconnectWallet = () => {
     setWallet({ connected: false, address: '' });
-    toast.info('Wallet disconnected');
   };
 
   const value = useMemo(() => ({
@@ -26,12 +65,14 @@ export function AppProvider({ children }) {
     user,
     networkOnline,
     isGuest,
+  theme,
     connectWallet,
     disconnectWallet,
     setUser,
     setNetworkOnline,
     setIsGuest,
-  }), [wallet, user, networkOnline, isGuest]);
+  toggleTheme,
+  }), [wallet, user, networkOnline, isGuest, theme]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

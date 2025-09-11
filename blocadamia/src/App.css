@@ -1,8 +1,10 @@
+/* Reset legacy root constraints so the app spans the full viewport */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
 /* Tailwind handles most styles; reserved for any custom keyframes */
